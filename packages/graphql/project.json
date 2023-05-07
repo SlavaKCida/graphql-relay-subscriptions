@@ -4,6 +4,9 @@
   "sourceRoot": "packages/graphql/src",
   "projectType": "application",
   "targets": {
+    "seed": {
+      "command": "npx prisma migrate dev --name init --schema packages/graphql/prisma/schema.prisma"
+    },
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],

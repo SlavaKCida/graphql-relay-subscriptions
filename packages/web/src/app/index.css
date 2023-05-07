@@ -1,0 +1,16 @@
+html {
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: beige;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

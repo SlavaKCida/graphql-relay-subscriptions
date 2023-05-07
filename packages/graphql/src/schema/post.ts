@@ -1,10 +1,11 @@
 import { builder } from '../builder'
 import { prisma } from '../db'
+import { MutationType } from '../pubsub'
 import { UserUniqueInput } from './user'
 
-builder.prismaObject('Post', {
+builder.prismaNode('Post', {
+  id: { field: 'id' },
   fields: (t) => ({
-    id: t.exposeString('id'),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
     title: t.exposeString('title'),
@@ -43,24 +44,23 @@ builder.queryFields((t) => ({
     type: 'Post',
     nullable: true,
     args: {
-      id: t.arg.string({ required: true }),
+      id: t.arg.globalID({ required: true }),
     },
     resolve: (query, parent, args) =>
       prisma.post.findUnique({
         ...query,
-        where: { id: args.id },
+        where: { id: args.id.id },
       }),
   }),
-  feed: t.prismaField({
-    type: ['Post'],
+  posts: t.prismaConnection({
+    type: 'Post',
     args: {
       searchString: t.arg.string({}),
-      skip: t.arg.int({}),
-      take: t.arg.int({}),
       orderBy: t.arg({
         type: PostOrderByUpdatedAtInput,
       }),
     },
+    cursor: 'id',
     resolve: (query, parent, args) => {
       const or = args.searchString
         ? {
@@ -74,11 +74,8 @@ builder.queryFields((t) => ({
       return prisma.post.findMany({
         ...query,
         where: {
-          published: true,
           ...or,
         },
-        take: args.take ?? undefined,
-        skip: args.skip ?? undefined,
         orderBy: args.orderBy ?? undefined,
       })
     },
@@ -120,8 +117,8 @@ builder.mutationFields((t) => ({
       }),
       authorEmail: t.arg.string({ required: true }),
     },
-    resolve: (query, parent, args) => {
-      return prisma.post.create({
+    resolve: async (query, parent, args, ctx) => {
+      const createdPost = await prisma.post.create({
         ...query,
         data: {
           title: args.data.title,
@@ -134,54 +131,87 @@ builder.mutationFields((t) => ({
           },
         },
       })
+
+      ctx.pubsub.publish('posts', {
+        mutationType: MutationType.CREATED,
+        post: createdPost,
+      })
+
+      return createdPost
     },
   }),
   togglePublishPost: t.prismaField({
     type: 'Post',
     args: {
-      id: t.arg.string({ required: true }),
+      id: t.arg.globalID({ required: true }),
     },
-    resolve: async (query, parent, args) => {
+    resolve: async (query, parent, args, ctx) => {
       // Toggling become simpler once this bug is resolved: https://github.com/prisma/prisma/issues/16715
       const postPublished = await prisma.post.findUnique({
-        where: { id: args.id },
+        where: { id: args.id.id },
         select: { published: true },
       })
-      console.log(postPublished)
-      return prisma.post.update({
+
+      const updatedPost = await prisma.post.update({
         ...query,
-        where: { id: args.id },
+        where: { id: args.id.id },
         data: { published: !postPublished?.published },
       })
+
+      ctx.pubsub.publish('post', args.id.id, {
+        mutationType: MutationType.UPDATED,
+        post: updatedPost,
+      })
+
+      return updatedPost
     },
   }),
   incrementPostViewCount: t.prismaField({
     type: 'Post',
     args: {
-      id: t.arg.string({ required: true }),
+      id: t.arg.globalID({ required: true }),
     },
-    resolve: (query, parent, args) => {
-      return prisma.post.update({
+    resolve: async (query, parent, args, ctx) => {
+      const post = await prisma.post.update({
         ...query,
-        where: { id: args.id },
+        where: { id: args.id.id },
         data: {
           viewCount: {
             increment: 1,
           },
         },
       })
+
+      ctx.pubsub.publish('post', args.id.id, {
+        mutationType: MutationType.UPDATED,
+        post,
+      })
+
+      return post
     },
   }),
   deletePost: t.prismaField({
     type: 'Post',
     args: {
-      id: t.arg.string({ required: true }),
+      id: t.arg.globalID({ required: true }),
     },
-    resolve: (query, parent, args) => {
-      return prisma.post.delete({
+    resolve: async (query, parent, args, ctx) => {
+      const post = await prisma.post.delete({
         ...query,
-        where: { id: args.id },
+        where: { id: args.id.id },
       })
+
+      ctx.pubsub.publish('post', args.id.id, {
+        mutationType: MutationType.DELETED,
+        post,
+      })
+
+      ctx.pubsub.publish('posts', {
+        mutationType: MutationType.DELETED,
+        post,
+      })
+
+      return post
     },
   }),
 }))

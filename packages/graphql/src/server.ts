@@ -1,12 +1,15 @@
 import { createYoga } from 'graphql-yoga'
 import { createServer } from 'http'
 import { schema } from './schema'
+import { pubsub } from './pubsub'
 
 const yoga = createYoga({
   graphqlEndpoint: '/',
   schema,
+  logging: true,
   context: (req) => {
     return {
+      pubsub,
       req,
     }
   },
