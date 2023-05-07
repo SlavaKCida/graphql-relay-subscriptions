@@ -4,6 +4,7 @@ import { SmallErrorBoundary } from '../SmallErrorBoundary'
 import { UsersList_AllUsersQuery } from './__generated__/UsersList_AllUsersQuery.graphql'
 import { UserItem } from './UserItem'
 import { FIRST_POSTS, UserPosts } from './UserPosts'
+import { QueryListKey, useQueryKeys } from '../../GraphqlFetchKeyProvider'
 
 export const UsersList: FC = () => {
   return (
@@ -19,6 +20,9 @@ export const UsersList: FC = () => {
 }
 
 const UsersContent: FC = () => {
+  const { keys } = useQueryKeys()
+  const fetchKey = keys[QueryListKey.Posts]
+
   const { allUsers } = useLazyLoadQuery<UsersList_AllUsersQuery>(
     graphql`
       query UsersList_AllUsersQuery($first: Int!) {
@@ -30,7 +34,7 @@ const UsersContent: FC = () => {
       }
     `,
     { first: FIRST_POSTS },
-    { fetchPolicy: 'store-and-network' }
+    { fetchKey }
   )
 
   if (allUsers.length === 0) return <>'No users'</>

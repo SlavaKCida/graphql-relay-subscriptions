@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e75ddca74155dde8696f94dc7baaa0f2>>
+ * @generated SignedSource<<507de980fcc0eb21e9a44d7e0a6368eb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,31 +10,63 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type PostsList_PostsQuery$variables = {};
-export type PostsList_PostsQuery$data = {
+export type SortOrder = "asc" | "desc" | "%future added value";
+export type PostOrderByUpdatedAtInput = {
+  updatedAt: SortOrder;
+};
+export type PostsList_FragmentRefetchQuery$variables = {
+  cursor?: string | null;
+  first?: number | null;
+  orderBy?: PostOrderByUpdatedAtInput | null;
+};
+export type PostsList_FragmentRefetchQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"PostsList_Fragment_Query">;
 };
-export type PostsList_PostsQuery = {
-  response: PostsList_PostsQuery$data;
-  variables: PostsList_PostsQuery$variables;
+export type PostsList_FragmentRefetchQuery = {
+  response: PostsList_FragmentRefetchQuery$data;
+  variables: PostsList_FragmentRefetchQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "first",
-    "value": 3
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
   },
   {
-    "kind": "Literal",
-    "name": "orderBy",
-    "value": {
+    "defaultValue": 3,
+    "kind": "LocalArgument",
+    "name": "first"
+  },
+  {
+    "defaultValue": {
       "updatedAt": "desc"
-    }
+    },
+    "kind": "LocalArgument",
+    "name": "orderBy"
   }
 ],
 v1 = {
+  "kind": "Variable",
+  "name": "first",
+  "variableName": "first"
+},
+v2 = {
+  "kind": "Variable",
+  "name": "orderBy",
+  "variableName": "orderBy"
+},
+v3 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  (v1/*: any*/),
+  (v2/*: any*/)
+],
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -43,13 +75,21 @@ v1 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "PostsList_PostsQuery",
+    "name": "PostsList_FragmentRefetchQuery",
     "selections": [
       {
-        "args": null,
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
+          },
+          (v1/*: any*/),
+          (v2/*: any*/)
+        ],
         "kind": "FragmentSpread",
         "name": "PostsList_Fragment_Query"
       }
@@ -59,13 +99,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "PostsList_PostsQuery",
+    "name": "PostsList_FragmentRefetchQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "QueryPostsConnection",
         "kind": "LinkedField",
         "name": "posts",
@@ -87,7 +127,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -138,7 +178,7 @@ return {
                         "name": "email",
                         "storageKey": null
                       },
-                      (v1/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -202,11 +242,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "posts(first:3,orderBy:{\"updatedAt\":\"desc\"})"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v3/*: any*/),
         "filters": [
           "orderBy"
         ],
@@ -218,16 +258,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "84232b7e3afba09a6f60ff1cb03d1ed8",
+    "cacheID": "bf7a3cb03ab2a08f37b743925824bc29",
     "id": null,
     "metadata": {},
-    "name": "PostsList_PostsQuery",
+    "name": "PostsList_FragmentRefetchQuery",
     "operationKind": "query",
-    "text": "query PostsList_PostsQuery {\n  ...PostsList_Fragment_Query\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment PostsList_Fragment_Query on Query {\n  posts(first: 3, orderBy: {updatedAt: desc}) {\n    edges {\n      node {\n        id\n        ...PostInfo_post\n        ...PostAuthor_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query PostsList_FragmentRefetchQuery(\n  $cursor: ID\n  $first: Int = 3\n  $orderBy: PostOrderByUpdatedAtInput = {updatedAt: desc}\n) {\n  ...PostsList_Fragment_Query_uGJAh\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment PostsList_Fragment_Query_uGJAh on Query {\n  posts(after: $cursor, first: $first, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        ...PostInfo_post\n        ...PostAuthor_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3354a93e7dc504e2ab000a08feed7b6d";
+(node as any).hash = "5399dcf04231892e29fb07576a1196ea";
 
 export default node;

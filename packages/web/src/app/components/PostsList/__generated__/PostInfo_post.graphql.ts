@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<61d1b66d53236f762d65024f082356b3>>
+ * @generated SignedSource<<160a02319683f4dec1c11cde3c554eae>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Fragment, ReaderFragment } from 'relay-runtime';
+import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type PostInfo_post$data = {
   readonly content: string | null;
@@ -23,10 +23,21 @@ export type PostInfo_post$key = {
   readonly " $fragmentSpreads": FragmentRefs<"PostInfo_post">;
 };
 
+import PostInfo_postRefetchQuery_graphql from './PostInfo_postRefetchQuery.graphql';
+
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "fragmentPathInResult": [
+        "node"
+      ],
+      "operation": PostInfo_postRefetchQuery_graphql,
+      "identifierField": "id"
+    }
+  },
   "name": "PostInfo_post",
   "selections": [
     {
@@ -69,6 +80,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "5e8fcf0a4e601c1c2866ea704802b5de";
+(node as any).hash = "bb985c7c340e59661b4bb2efd275dc5a";
 
 export default node;

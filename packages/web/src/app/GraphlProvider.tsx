@@ -60,7 +60,8 @@ const executeSubscription = (
   return observable as unknown as RelayObservable<QueryPayload>
 }
 
-// const network = Network.create(executeQueryOrMutation, executeSubscription)
+const source = new RecordSource()
+const store = new Store(source)
 
 const createRelayNetworkLayer = (getAccessToken: (v?: boolean) => string) => {
   const network = new RelayNetworkLayer(
@@ -91,8 +92,6 @@ const createRelayNetworkLayer = (getAccessToken: (v?: boolean) => string) => {
     }
   )
 
-  const source = new RecordSource()
-  const store = new Store(source)
   return new Environment({ network, store })
 }
 
@@ -109,3 +108,7 @@ export const GraphqlProvider: FC<PropsWithChildren> = ({ children }) => {
     </RelayEnvironmentProvider>
   )
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+window['store'] = store

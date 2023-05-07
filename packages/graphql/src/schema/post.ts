@@ -1,7 +1,9 @@
+import { encodeGlobalID } from '@pothos/plugin-relay'
 import { builder } from '../builder'
 import { prisma } from '../db'
-import { MutationType } from '../pubsub'
+import { MutationType, PubSubEventType, pubsub } from '../pubsub'
 import { UserUniqueInput } from './user'
+import { Post } from '@prisma/client'
 
 builder.prismaNode('Post', {
   id: { field: 'id' },
@@ -132,9 +134,10 @@ builder.mutationFields((t) => ({
         },
       })
 
-      ctx.pubsub.publish('posts', {
+      pubSubPublish({
+        pubSub: ctx.pubsub,
         mutationType: MutationType.CREATED,
-        post: createdPost,
+        node: createdPost,
       })
 
       return createdPost
@@ -158,9 +161,10 @@ builder.mutationFields((t) => ({
         data: { published: !postPublished?.published },
       })
 
-      ctx.pubsub.publish('post', args.id.id, {
+      pubSubPublish({
+        pubSub: ctx.pubsub,
         mutationType: MutationType.UPDATED,
-        post: updatedPost,
+        node: updatedPost,
       })
 
       return updatedPost
@@ -182,9 +186,10 @@ builder.mutationFields((t) => ({
         },
       })
 
-      ctx.pubsub.publish('post', args.id.id, {
+      pubSubPublish({
+        pubSub: ctx.pubsub,
         mutationType: MutationType.UPDATED,
-        post,
+        node: post,
       })
 
       return post
@@ -201,17 +206,34 @@ builder.mutationFields((t) => ({
         where: { id: args.id.id },
       })
 
-      ctx.pubsub.publish('post', args.id.id, {
+      pubSubPublish({
+        pubSub: ctx.pubsub,
         mutationType: MutationType.DELETED,
-        post,
-      })
-
-      ctx.pubsub.publish('posts', {
-        mutationType: MutationType.DELETED,
-        post,
+        node: post,
       })
 
       return post
     },
   }),
 }))
+
+const pubSubPublish = ({
+  pubSub,
+  node,
+  mutationType,
+}: {
+  pubSub: typeof pubsub
+  node: Post
+  mutationType: MutationType
+}) => {
+  pubSub.publish('updates', {
+    type: PubSubEventType.Post,
+    mutationType,
+    id: encodeGlobalID('Post', node.id),
+  })
+
+  pubSub.publish('postUpdates', {
+    mutationType,
+    node,
+  })
+}

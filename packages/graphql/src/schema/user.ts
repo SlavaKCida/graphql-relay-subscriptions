@@ -1,7 +1,10 @@
 // import { encodeGlobalID } from '@pothos/plugin-relay'
+import { User } from '@prisma/client'
 import { builder } from '../builder'
 import { prisma } from '../db'
+import { MutationType, PubSubEventType, pubsub } from '../pubsub'
 import { PostCreateInput } from './post'
+import { encodeGlobalID } from '@pothos/plugin-relay'
 
 builder.prismaNode('User', {
   id: { field: 'id' },
@@ -25,15 +28,6 @@ builder.prismaNode('User', {
           },
         }),
     }),
-
-    // posts: t.relation('posts', {
-    //   args: {
-    //     first: t.arg.int({ required: true }),
-    //   },
-    //   resolve: (query, parent, args, context, info) => {
-    //       return prisma.post.findMany({})
-    //   },
-    // }),
   }),
 })
 
@@ -80,8 +74,8 @@ builder.mutationFields((t) => ({
         required: true,
       }),
     },
-    resolve: (query, parent, args) => {
-      return prisma.user.create({
+    resolve: async (query, parent, args, ctx) => {
+      const user = await prisma.user.create({
         ...query,
         data: {
           email: args.data.email,
@@ -94,6 +88,35 @@ builder.mutationFields((t) => ({
           },
         },
       })
+
+      pubSubPublish({
+        pubSub: ctx.pubsub,
+        node: user,
+        mutationType: MutationType.CREATED,
+      })
+
+      return user
     },
   }),
 }))
+
+const pubSubPublish = ({
+  pubSub,
+  node,
+  mutationType,
+}: {
+  pubSub: typeof pubsub
+  node: User
+  mutationType: MutationType
+}) => {
+  pubSub.publish('updates', {
+    type: PubSubEventType.User,
+    mutationType,
+    id: encodeGlobalID('User', node.id),
+  })
+
+  pubSub.publish('userUpdates', {
+    mutationType,
+    node,
+  })
+}

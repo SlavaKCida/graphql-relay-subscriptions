@@ -1,5 +1,10 @@
-import { FC } from 'react'
-import { graphql, useFragment } from 'react-relay'
+import { FC, useCallback } from 'react'
+import {
+  graphql,
+  useFragment,
+  useRefetchableFragment,
+  useSubscribeToInvalidationState,
+} from 'react-relay'
 import { PostInfo_post$key } from './__generated__/PostInfo_post.graphql'
 import { format } from 'date-fns'
 
@@ -8,9 +13,10 @@ type PostInfoProps = {
 }
 
 export const PostInfo: FC<PostInfoProps> = ({ post$key }) => {
-  const post = useFragment(
+  const [post, refetch] = useRefetchableFragment(
     graphql`
-      fragment PostInfo_post on Post {
+      fragment PostInfo_post on Post
+      @refetchable(queryName: "PostInfo_postRefetchQuery") {
         id
         content
         title
@@ -20,6 +26,12 @@ export const PostInfo: FC<PostInfoProps> = ({ post$key }) => {
     `,
     post$key
   )
+
+  const refetchData = useCallback(() => {
+    console.log('Noticed invalidation, refetching')
+    refetch(post$key)
+  }, [post$key, refetch])
+  useSubscribeToInvalidationState([post.id], refetchData)
 
   return (
     <>

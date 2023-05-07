@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<003dd5185b12627d418cffd0b73e9807>>
+ * @generated SignedSource<<509e48fc62049a90ed743f53f1b0b158>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,10 +9,11 @@
 // @ts-nocheck
 
 import { ConcreteRequest, GraphQLSubscription } from 'relay-runtime';
+export type MutationType = "CREATED" | "DELETED" | "UPDATED" | "%future added value";
 export type PostsSubscription$variables = {};
 export type PostsSubscription$data = {
   readonly posts: {
-    readonly mutationType: string;
+    readonly mutationType: MutationType;
     readonly post: {
       readonly id: string;
     } | null;

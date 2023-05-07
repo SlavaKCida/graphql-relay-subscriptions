@@ -7,24 +7,34 @@ export enum MutationType {
   DELETED = 'DELETED',
 }
 
-export interface PubSubEvent {
+export enum PubSubEventType {
+  'User' = 'User',
+  'Post' = 'Post',
+}
+
+export type PubSubUpdateEvent = {
+  type: PubSubEventType
   mutationType: MutationType
+  id: string
 }
 
-export interface PubSubUserEvent extends PubSubEvent {
-  user: User
+export interface PubSubUserEvent {
+  mutationType: MutationType
+  node: User
 }
 
-export interface PubSubPostEvent extends PubSubEvent {
-  post: Post
+export interface PubSubPostEvent {
+  mutationType: MutationType
+  node: Post
 }
+
+export type PubSubEvent = PubSubPostEvent | PubSubUserEvent | PubSubUpdateEvent
 
 export interface PuSubEvents
   extends Record<string, [PubSubEvent] | [string, PubSubEvent]> {
-  user: [string, PubSubUserEvent]
-  post: [string, PubSubPostEvent]
-  users: [PubSubUserEvent]
-  posts: [PubSubPostEvent]
+  updates: [PubSubUpdateEvent]
+  userUpdates: [PubSubUserEvent]
+  postUpdates: [PubSubPostEvent]
 }
 
 export const pubsub = createPubSub<PuSubEvents>({})
