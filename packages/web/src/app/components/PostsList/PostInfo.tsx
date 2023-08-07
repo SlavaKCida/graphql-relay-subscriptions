@@ -1,18 +1,20 @@
 import { FC, useCallback } from 'react'
 import {
   graphql,
-  useFragment,
   useRefetchableFragment,
   useSubscribeToInvalidationState,
 } from 'react-relay'
 import { PostInfo_post$key } from './__generated__/PostInfo_post.graphql'
 import { format } from 'date-fns'
+import { useTogglePublishPost } from '../../mutations/useTogglePublishPost'
+import { T } from '../ui/T'
 
 type PostInfoProps = {
   post$key: PostInfo_post$key
 }
 
 export const PostInfo: FC<PostInfoProps> = ({ post$key }) => {
+  const { togglePublish } = useTogglePublishPost()
   const [post, refetch] = useRefetchableFragment(
     graphql`
       fragment PostInfo_post on Post
@@ -28,20 +30,29 @@ export const PostInfo: FC<PostInfoProps> = ({ post$key }) => {
   )
 
   const refetchData = useCallback(() => {
-    console.log('Noticed invalidation, refetching')
     refetch(post$key)
   }, [post$key, refetch])
   useSubscribeToInvalidationState([post.id], refetchData)
 
   return (
     <>
-      <p className="font-semibold mb-1">
-        {post.published ? '😳' : '😵‍💫'} {post.title}{' '}
-        <span className="text-xs text-stone-400 font-normal inline-block pl-1">
+      <div className="mb-1">
+        <T size="small" bold>
+          {post.title}
+        </T>
+        <T size="xsmall" color="400" className="pl-2">
           {format(new Date(post.createdAt), 'hh:mm, do MMM')}
-        </span>
-      </p>
-      <p className="text-sm">{post.content || 'No content for this post'}</p>
+        </T>
+        <T
+          onClick={() => togglePublish({ variables: { id: post.id } })}
+          size="xsmall"
+          color="400"
+          className="ml-2 cursor-pointer hover:text-black"
+        >
+          {post.published ? '😳 – published' : '😵‍💫 – hidden'}
+        </T>
+      </div>
+      <T>{post.content || 'No content for this post'}</T>
     </>
   )
 }

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<507de980fcc0eb21e9a44d7e0a6368eb>>
+ * @generated SignedSource<<d420b50c49c8800018136aa58f96c0f2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,8 +15,10 @@ export type PostOrderByUpdatedAtInput = {
   updatedAt: SortOrder;
 };
 export type PostsList_FragmentRefetchQuery$variables = {
-  cursor?: string | null;
+  after?: string | null;
+  before?: string | null;
   first?: number | null;
+  last?: number | null;
   orderBy?: PostOrderByUpdatedAtInput | null;
 };
 export type PostsList_FragmentRefetchQuery$data = {
@@ -32,12 +34,22 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "cursor"
+    "name": "after"
   },
   {
-    "defaultValue": 3,
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "before"
+  },
+  {
+    "defaultValue": null,
     "kind": "LocalArgument",
     "name": "first"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "last"
   },
   {
     "defaultValue": {
@@ -47,26 +59,34 @@ var v0 = [
     "name": "orderBy"
   }
 ],
-v1 = {
-  "kind": "Variable",
-  "name": "first",
-  "variableName": "first"
-},
-v2 = {
-  "kind": "Variable",
-  "name": "orderBy",
-  "variableName": "orderBy"
-},
-v3 = [
+v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor"
+    "variableName": "after"
   },
-  (v1/*: any*/),
-  (v2/*: any*/)
+  {
+    "kind": "Variable",
+    "name": "before",
+    "variableName": "before"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  },
+  {
+    "kind": "Variable",
+    "name": "last",
+    "variableName": "last"
+  },
+  {
+    "kind": "Variable",
+    "name": "orderBy",
+    "variableName": "orderBy"
+  }
 ],
-v4 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -81,15 +101,7 @@ return {
     "name": "PostsList_FragmentRefetchQuery",
     "selections": [
       {
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
-          },
-          (v1/*: any*/),
-          (v2/*: any*/)
-        ],
+        "args": (v1/*: any*/),
         "kind": "FragmentSpread",
         "name": "PostsList_Fragment_Query"
       }
@@ -105,7 +117,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "QueryPostsConnection",
         "kind": "LinkedField",
         "name": "posts",
@@ -127,7 +139,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -178,7 +190,7 @@ return {
                         "name": "email",
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v2/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -246,7 +258,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v1/*: any*/),
         "filters": [
           "orderBy"
         ],
@@ -258,16 +270,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "bf7a3cb03ab2a08f37b743925824bc29",
+    "cacheID": "5905a672f18eefc5ffa9fdc9c73bc622",
     "id": null,
     "metadata": {},
     "name": "PostsList_FragmentRefetchQuery",
     "operationKind": "query",
-    "text": "query PostsList_FragmentRefetchQuery(\n  $cursor: ID\n  $first: Int = 3\n  $orderBy: PostOrderByUpdatedAtInput = {updatedAt: desc}\n) {\n  ...PostsList_Fragment_Query_uGJAh\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment PostsList_Fragment_Query_uGJAh on Query {\n  posts(after: $cursor, first: $first, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        ...PostInfo_post\n        ...PostAuthor_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query PostsList_FragmentRefetchQuery(\n  $after: ID\n  $before: ID\n  $first: Int\n  $last: Int\n  $orderBy: PostOrderByUpdatedAtInput = {updatedAt: desc}\n) {\n  ...PostsList_Fragment_Query_sdb03\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment PostsList_Fragment_Query_sdb03 on Query {\n  posts(after: $after, first: $first, before: $before, last: $last, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        ...PostInfo_post\n        ...PostAuthor_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5399dcf04231892e29fb07576a1196ea";
+(node as any).hash = "00cf1cee858efe4f5204fba9e7e8449b";
 
 export default node;

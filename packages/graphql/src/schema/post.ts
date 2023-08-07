@@ -62,6 +62,7 @@ builder.queryFields((t) => ({
         type: PostOrderByUpdatedAtInput,
       }),
     },
+    defaultSize: 3,
     cursor: 'id',
     resolve: (query, parent, args) => {
       const or = args.searchString

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f86b03707b50c7ee29ec9dd3274bc00f>>
+ * @generated SignedSource<<d1ed1645a889b17f4180db22006fba60>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -44,12 +44,22 @@ return {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "cursor"
+      "name": "after"
     },
     {
-      "defaultValue": 3,
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "before"
+    },
+    {
+      "defaultValue": null,
       "kind": "LocalArgument",
       "name": "first"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "last"
     },
     {
       "defaultValue": {
@@ -63,9 +73,9 @@ return {
   "metadata": {
     "connection": [
       {
-        "count": "first",
-        "cursor": "cursor",
-        "direction": "forward",
+        "count": null,
+        "cursor": null,
+        "direction": "bidirectional",
         "path": (v0/*: any*/)
       }
     ],
@@ -73,9 +83,12 @@ return {
       "connection": {
         "forward": {
           "count": "first",
-          "cursor": "cursor"
+          "cursor": "after"
         },
-        "backward": null,
+        "backward": {
+          "count": "last",
+          "cursor": "before"
+        },
         "path": (v0/*: any*/)
       },
       "fragmentPathInResult": [],
@@ -199,6 +212,6 @@ return {
 };
 })();
 
-(node as any).hash = "5399dcf04231892e29fb07576a1196ea";
+(node as any).hash = "00cf1cee858efe4f5204fba9e7e8449b";
 
 export default node;

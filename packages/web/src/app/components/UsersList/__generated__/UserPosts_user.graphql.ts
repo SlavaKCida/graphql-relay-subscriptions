@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4a41bf0c864870da2e30221c6597d940>>
+ * @generated SignedSource<<f5fda59258d39034174d1e983e5d36e2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,9 +8,10 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Fragment, ReaderFragment } from 'relay-runtime';
+import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type UserPosts_user$data = {
+  readonly id: string;
   readonly name: string | null;
   readonly posts: ReadonlyArray<{
     readonly id: string;
@@ -23,7 +24,17 @@ export type UserPosts_user$key = {
   readonly " $fragmentSpreads": FragmentRefs<"UserPosts_user">;
 };
 
-const node: ReaderFragment = {
+import UserPosts_postsRefetchQuery_graphql from './UserPosts_postsRefetchQuery.graphql';
+
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": 3,
@@ -32,9 +43,19 @@ const node: ReaderFragment = {
     }
   ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "fragmentPathInResult": [
+        "node"
+      ],
+      "operation": UserPosts_postsRefetchQuery_graphql,
+      "identifierField": "id"
+    }
+  },
   "name": "UserPosts_user",
   "selections": [
+    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -56,13 +77,7 @@ const node: ReaderFragment = {
       "name": "posts",
       "plural": true,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "id",
-          "storageKey": null
-        },
+        (v0/*: any*/),
         {
           "args": null,
           "kind": "FragmentSpread",
@@ -75,7 +90,8 @@ const node: ReaderFragment = {
   "type": "User",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "08e5524b6ec230beba5371dc218f4b55";
+(node as any).hash = "fb313129e40af2b90c0fac50ebc4e10d";
 
 export default node;

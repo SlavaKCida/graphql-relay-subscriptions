@@ -10,7 +10,11 @@ const feedbackLikeSubscription = graphql`
       mutationType
       node {
         id
-        published
+        author {
+          id
+        }
+        ...PostInfo_post
+        ...PostAuthor_post
       }
     }
   }
@@ -27,6 +31,7 @@ const usePostEventsSubscription = ({ onUpdate }: { onUpdate: () => void }) => {
         if (!postUpdates.node) return
 
         if (postUpdates.mutationType === 'CREATED') {
+          store.get(postUpdates.node.author.id)?.invalidateRecord()
           onUpdate()
         }
       },

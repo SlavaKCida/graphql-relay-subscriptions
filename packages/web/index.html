@@ -7,7 +7,122 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            telegraf: ['Telegraf', 'sans-serif'],
+          },
+          extend: {
+            fontSize: {
+              h0: ['48px', '52px'],
+              h1: ['32px', '40px'],
+              h2: ['24px', '36px'],
+              h3: ['20px', '32px'],
+              h4: ['16px', '28px'],
+              h5: ['14px', '20px'],
+              h6: ['12px', '18px'],
+              xlarge: ['20px', '28px'],
+              large: ['18px', '30px'],
+              medium: ['16px', '24px'],
+              small: ['14px', '22px'],
+              xsmall: ['12px', '16px'],
+              xxsmall: ['11px', '14px'],
+            },
+            colors: {
+              accent: '#B481C5',
+              creme: '#FFF9ED',
+              transparent: 'transparent',
+              white: '#fff',
+
+              gray: 'rgb(27,14,31)',
+              'gray/93': 'rgb(27,14,31, 0.93)',
+              'gray/87': 'rgb(27,14,31, 0.87)',
+              'gray/81': 'rgb(27,14,31, 0.81)',
+              'gray/75': 'rgb(27,14,31, 0.75)',
+              'gray/68': 'rgb(27,14,31, 0.68)',
+              'gray/62': 'rgb(27,14,31, 0.62)',
+              'gray/56': 'rgb(27,14,31, 0.56)',
+              'gray/50': 'rgb(27,14,31, 0.50)',
+              'gray/43': 'rgb(27,14,31, 0.43)',
+              'gray/37': 'rgb(27,14,31, 0.37)',
+              'gray/31': 'rgb(27,14,31, 0.31)',
+              'gray/18': 'rgb(27,14,31, 0.18)',
+              'gray/12': 'rgb(27,14,31, 0.12)',
+
+              'gray-900': '#1B0E1F',
+              'gray-800': '#271D2C',
+              'gray-750': '#362C3A',
+              'gray-700': '#443B48',
+              'gray-650': '#524A56',
+              'gray-600': '#605964',
+              'gray-550': '#6F6872',
+              'gray-500': '#7E7780',
+              'gray-450': '#8C868E',
+              'gray-400': '#9A969D',
+              'gray-350': '#A8A5AA',
+              'gray-300': '#B7B4B9',
+              'gray-250': '#C5C3C7',
+              'gray-200': '#D4D2D5',
+              'gray-100': '#E2E1E3',
+
+              'red-800': '#EB494A',
+              'red-600': '#EC6569',
+              'red-400': '#F09599',
+              'red-200': '#F8D2D5',
+              'red-100': '#FCEFF0',
+
+              'yellow-900': '#F0B23E',
+              'yellow-800': '#E7B555',
+              'yellow-600': '#EBC373',
+              'yellow-400': '#F0D59B',
+              'yellow-200': '#FBE8BE',
+              'yellow-100': '#FDF2D7',
+
+              'green-800': '#2C7D67',
+              'green-100': '#EBF5F2',
+
+              'blue-800': '#6BBDCA',
+              'blue-600': '#86C7D0',
+              'blue-400': '#A7D5DB',
+              'blue-200': '#C6ECEE',
+              'blue-100': '#DFF2F0',
+
+              'purple-900': '#2F123D',
+              'purple-800': '#32103D',
+              'purple-600': '#51365F',
+              'purple-500': '#876194',
+              'purple-400': '#AD84C2',
+              'purple-200': '#DDC4EA',
+              'purple-100': '#EEE1F5',
+            },
+            borderRadius: {
+              none: '0',
+              5: '20px',
+              4: '16px',
+              3: '12px',
+              2: '8px',
+              DEFAULT: '4px',
+              full: '9999px',
+            },
+            boxShadow: {
+              modal:
+                '0px 8px 16px -4px rgba(0, 0, 0, 0.08), 0px 4px 8px -4px rgba(0, 0, 0, 0.08)',
+            },
+            maxWidth: {
+              '8xl': '90rem',
+              '10xl': '100rem',
+            },
+            borderWidth: {
+              1.5: '1.5px',
+            },
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

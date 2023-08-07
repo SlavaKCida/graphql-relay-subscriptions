@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b98a0457153da8a2207d0a53f283975c>>
+ * @generated SignedSource<<44c8f172209614a78d4050edff2b8b2e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -154,12 +154,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9c4877d2e9e0633703a777e6e9473114",
+    "cacheID": "2f0d7043c0a686036ab03cd0b90a2878",
     "id": null,
     "metadata": {},
     "name": "UsersList_AllUsersQuery",
     "operationKind": "query",
-    "text": "query UsersList_AllUsersQuery(\n  $first: Int!\n) {\n  allUsers {\n    id\n    ...UserItem_user\n    ...UserPosts_user_3ASum4\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment UserItem_user on User {\n  id\n  email\n  name\n}\n\nfragment UserPosts_user_3ASum4 on User {\n  name\n  posts(first: $first) {\n    id\n    ...PostInfo_post\n  }\n}\n"
+    "text": "query UsersList_AllUsersQuery(\n  $first: Int!\n) {\n  allUsers {\n    id\n    ...UserItem_user\n    ...UserPosts_user_3ASum4\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment UserItem_user on User {\n  id\n  email\n  name\n}\n\nfragment UserPosts_user_3ASum4 on User {\n  id\n  name\n  posts(first: $first) {\n    id\n    ...PostInfo_post\n  }\n}\n"
   }
 };
 })();

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e75ddca74155dde8696f94dc7baaa0f2>>
+ * @generated SignedSource<<fa432b941baafaf6f4afa75d236c3a44>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,11 +21,6 @@ export type PostsList_PostsQuery = {
 
 const node: ConcreteRequest = (function(){
 var v0 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 3
-  },
   {
     "kind": "Literal",
     "name": "orderBy",
@@ -202,7 +197,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "posts(first:3,orderBy:{\"updatedAt\":\"desc\"})"
+        "storageKey": "posts(orderBy:{\"updatedAt\":\"desc\"})"
       },
       {
         "alias": null,
@@ -218,12 +213,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "84232b7e3afba09a6f60ff1cb03d1ed8",
+    "cacheID": "2c8dae560d82b9c7696f7520a0df4e14",
     "id": null,
     "metadata": {},
     "name": "PostsList_PostsQuery",
     "operationKind": "query",
-    "text": "query PostsList_PostsQuery {\n  ...PostsList_Fragment_Query\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment PostsList_Fragment_Query on Query {\n  posts(first: 3, orderBy: {updatedAt: desc}) {\n    edges {\n      node {\n        id\n        ...PostInfo_post\n        ...PostAuthor_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
+    "text": "query PostsList_PostsQuery {\n  ...PostsList_Fragment_Query\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment PostsList_Fragment_Query on Query {\n  posts(orderBy: {updatedAt: desc}) {\n    edges {\n      node {\n        id\n        ...PostInfo_post\n        ...PostAuthor_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n      startCursor\n    }\n  }\n}\n"
   }
 };
 })();

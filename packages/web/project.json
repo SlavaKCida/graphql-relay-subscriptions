@@ -4,6 +4,9 @@
   "sourceRoot": "packages/web/src",
   "projectType": "application",
   "targets": {
+    "relay": {
+      "command": "relay-compiler --watch"
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],

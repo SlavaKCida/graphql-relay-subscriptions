@@ -5,11 +5,14 @@ import { UsersList_AllUsersQuery } from './__generated__/UsersList_AllUsersQuery
 import { UserItem } from './UserItem'
 import { FIRST_POSTS, UserPosts } from './UserPosts'
 import { QueryListKey, useQueryKeys } from '../../GraphqlFetchKeyProvider'
+import { T } from '../ui/T'
 
 export const UsersList: FC = () => {
   return (
     <div>
-      <p className="text-3xl text-black/20 mb-4">Users</p>
+      <T color="100" size="h1" className="mb-2" block>
+        Users
+      </T>
       <Suspense fallback="Loading">
         <SmallErrorBoundary>
           <UsersContent />
@@ -21,7 +24,7 @@ export const UsersList: FC = () => {
 
 const UsersContent: FC = () => {
   const { keys } = useQueryKeys()
-  const fetchKey = keys[QueryListKey.Posts]
+  const fetchKey = keys[QueryListKey.Users]
 
   const { allUsers } = useLazyLoadQuery<UsersList_AllUsersQuery>(
     graphql`
@@ -37,7 +40,7 @@ const UsersContent: FC = () => {
     { fetchKey }
   )
 
-  if (allUsers.length === 0) return <>'No users'</>
+  if (allUsers.length === 0) return <>No users</>
 
   return (
     <div className="flex flex-col gap-2">

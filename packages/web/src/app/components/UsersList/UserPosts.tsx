@@ -1,6 +1,10 @@
-import { graphql, useFragment } from 'react-relay'
+import {
+  graphql,
+  useRefetchableFragment,
+  useSubscribeToInvalidationState,
+} from 'react-relay'
 import { UserPosts_user$key } from './__generated__/UserPosts_user.graphql'
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import { PostInfo } from '../PostsList/PostInfo'
 
 type UserPostsProps = {
@@ -8,13 +12,15 @@ type UserPostsProps = {
   firstPosts?: number
 }
 
-export const FIRST_POSTS = 3
+export const FIRST_POSTS = 2
 
 export const UserPosts: FC<UserPostsProps> = ({ user$key }) => {
-  const user = useFragment(
+  const [user, refetch] = useRefetchableFragment(
     graphql`
       fragment UserPosts_user on User
+      @refetchable(queryName: "UserPosts_postsRefetchQuery")
       @argumentDefinitions(first: { type: "Int", defaultValue: 3 }) {
+        id
         name
         posts(first: $first) {
           id
@@ -24,6 +30,11 @@ export const UserPosts: FC<UserPostsProps> = ({ user$key }) => {
     `,
     user$key
   )
+
+  const refetchData = useCallback(() => {
+    refetch(user$key)
+  }, [user$key, refetch])
+  useSubscribeToInvalidationState([user.id], refetchData)
 
   if (!user.posts.length) return null
 
