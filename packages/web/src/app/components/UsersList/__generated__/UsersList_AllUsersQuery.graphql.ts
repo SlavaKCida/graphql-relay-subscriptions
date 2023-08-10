@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<44c8f172209614a78d4050edff2b8b2e>>
+ * @generated SignedSource<<826823631cec8a3c9914505ad0dc0bf8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,7 @@ export type UsersList_AllUsersQuery$variables = {
 export type UsersList_AllUsersQuery$data = {
   readonly allUsers: ReadonlyArray<{
     readonly id: string;
-    readonly " $fragmentSpreads": FragmentRefs<"UserItem_user" | "UserPosts_user">;
+    readonly " $fragmentSpreads": FragmentRefs<"UserDraftsCount_user" | "UserItem_user" | "UserPosts_user">;
   }>;
 };
 export type UsersList_AllUsersQuery = {
@@ -68,6 +68,11 @@ return {
             "name": "UserItem_user"
           },
           {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "UserDraftsCount_user"
+          },
+          {
             "args": (v2/*: any*/),
             "kind": "FragmentSpread",
             "name": "UserPosts_user"
@@ -106,6 +111,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "draftsCount",
             "storageKey": null
           },
           {
@@ -154,16 +166,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2f0d7043c0a686036ab03cd0b90a2878",
+    "cacheID": "f4b2e543ce2f8133c0ec964b7a2d2fa9",
     "id": null,
     "metadata": {},
     "name": "UsersList_AllUsersQuery",
     "operationKind": "query",
-    "text": "query UsersList_AllUsersQuery(\n  $first: Int!\n) {\n  allUsers {\n    id\n    ...UserItem_user\n    ...UserPosts_user_3ASum4\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment UserItem_user on User {\n  id\n  email\n  name\n}\n\nfragment UserPosts_user_3ASum4 on User {\n  id\n  name\n  posts(first: $first) {\n    id\n    ...PostInfo_post\n  }\n}\n"
+    "text": "query UsersList_AllUsersQuery(\n  $first: Int!\n) {\n  allUsers {\n    id\n    ...UserItem_user\n    ...UserDraftsCount_user\n    ...UserPosts_user_3ASum4\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment UserDraftsCount_user on User {\n  draftsCount\n}\n\nfragment UserItem_user on User {\n  id\n  email\n  name\n}\n\nfragment UserPosts_user_3ASum4 on User {\n  id\n  name\n  posts(first: $first) {\n    id\n    ...PostInfo_post\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "65c293344fc4a8011e4790882e9964af";
+(node as any).hash = "87b7527b9956786735bc1b4b989afb6e";
 
 export default node;

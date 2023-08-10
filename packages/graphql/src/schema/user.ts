@@ -1,4 +1,3 @@
-// import { encodeGlobalID } from '@pothos/plugin-relay'
 import { User } from '@prisma/client'
 import { builder } from '../builder'
 import { prisma } from '../db'
@@ -27,6 +26,17 @@ builder.prismaNode('User', {
             authorId: user.id,
           },
         }),
+    }),
+    draftsCount: t.int({
+      resolve: (query) =>
+        prisma.post
+          .findMany({
+            where: {
+              authorId: query.id,
+              published: false,
+            },
+          })
+          .then((posts) => posts.length),
     }),
   }),
 })
