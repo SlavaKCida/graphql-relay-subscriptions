@@ -4,7 +4,7 @@ import { GraphQLSubscriptionConfig } from 'relay-runtime'
 import { EventsSubscription } from './__generated__/EventsSubscription.graphql'
 import { QueryListKey, useQueryKeys } from '../../GraphqlFetchKeyProvider'
 
-const feedbackLikeSubscription = graphql`
+const postUpdatesSubscription = graphql`
   subscription EventsSubscription {
     postUpdates {
       mutationType
@@ -12,6 +12,7 @@ const feedbackLikeSubscription = graphql`
         id
         author {
           id
+          ...UserDraftsCount_user
         }
         ...PostInfo_post
         ...PostAuthor_post
@@ -23,7 +24,7 @@ const feedbackLikeSubscription = graphql`
 const usePostEventsSubscription = ({ onUpdate }: { onUpdate: () => void }) => {
   const config: GraphQLSubscriptionConfig<EventsSubscription> = useMemo(
     () => ({
-      subscription: feedbackLikeSubscription,
+      subscription: postUpdatesSubscription,
       onNext: (data) => {
         console.log('Got data from posts subscription', data?.postUpdates)
       },

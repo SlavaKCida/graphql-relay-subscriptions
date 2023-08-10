@@ -6,6 +6,7 @@ import { UserItem } from './UserItem'
 import { FIRST_POSTS, UserPosts } from './UserPosts'
 import { QueryListKey, useQueryKeys } from '../../GraphqlFetchKeyProvider'
 import { T } from '../ui/T'
+import { UserDraftsCount } from './UserDraftsCount'
 
 export const UsersList: FC = () => {
   return (
@@ -32,6 +33,7 @@ const UsersContent: FC = () => {
         allUsers {
           id
           ...UserItem_user
+          ...UserDraftsCount_user
           ...UserPosts_user @arguments(first: $first)
         }
       }
@@ -51,6 +53,7 @@ const UsersContent: FC = () => {
         >
           <UserItem user$key={u} />
           <UserPosts user$key={u} />
+          <UserDraftsCount user$key={u} />
         </div>
       ))}
     </div>

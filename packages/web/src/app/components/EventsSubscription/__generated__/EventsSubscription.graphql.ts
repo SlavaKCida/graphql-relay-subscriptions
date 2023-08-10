@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0f85dd4c07981fadc4cf366e86fc889e>>
+ * @generated SignedSource<<1138bef894aa8698c9ee7ee01663612c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,7 @@ export type EventsSubscription$data = {
     readonly node: {
       readonly author: {
         readonly id: string;
+        readonly " $fragmentSpreads": FragmentRefs<"UserDraftsCount_user">;
       };
       readonly id: string;
       readonly " $fragmentSpreads": FragmentRefs<"PostAuthor_post" | "PostInfo_post">;
@@ -77,7 +78,12 @@ return {
                 "name": "author",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/)
+                  (v1/*: any*/),
+                  {
+                    "args": null,
+                    "kind": "FragmentSpread",
+                    "name": "UserDraftsCount_user"
+                  }
                 ],
                 "storageKey": null
               },
@@ -138,6 +144,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "draftsCount",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "name",
                     "storageKey": null
                   },
@@ -188,16 +201,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "710506e125ab860d1c374c287565d137",
+    "cacheID": "05c4df81a4b612cc53c95c9027d91ef7",
     "id": null,
     "metadata": {},
     "name": "EventsSubscription",
     "operationKind": "subscription",
-    "text": "subscription EventsSubscription {\n  postUpdates {\n    mutationType\n    node {\n      id\n      author {\n        id\n      }\n      ...PostInfo_post\n      ...PostAuthor_post\n    }\n  }\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n"
+    "text": "subscription EventsSubscription {\n  postUpdates {\n    mutationType\n    node {\n      id\n      author {\n        id\n        ...UserDraftsCount_user\n      }\n      ...PostInfo_post\n      ...PostAuthor_post\n    }\n  }\n}\n\nfragment PostAuthor_post on Post {\n  author {\n    name\n    email\n    id\n  }\n}\n\nfragment PostInfo_post on Post {\n  id\n  content\n  title\n  createdAt\n  published\n}\n\nfragment UserDraftsCount_user on User {\n  draftsCount\n}\n"
   }
 };
 })();
 
-(node as any).hash = "50d7aa268db83ef204c6a7131148565f";
+(node as any).hash = "6175c75a609fa7f8ad0118cf7b041e0b";
 
 export default node;
