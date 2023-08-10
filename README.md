@@ -71,6 +71,71 @@ Client: Initiate subscription over SSE or WS and keeps connection alive
 - Way of persisting the cache
 - Serialization and updating the cache
 
+graphql
+
+```
+{
+  allUsers {
+    __typename # would be automatically added
+    id # would be automatically added on Relay
+    draftsCount
+  }
+  otherQueryWithUsers(emailStartsWith: "other") {
+    __typename # would be automatically added
+    id # would be automatically added on Relay
+    email
+  }
+}
+```
+
+response
+
+```json
+{
+  "data": {
+    "allUsers": [
+      {
+        "__typename": "User",
+        "id": "VXNlcjo0YzdiNmViYS01ZDY3LTRhMzgtYjU3Yi0zNTc0ZjdjZWM2OGU=",
+        "draftsCount": 3
+      },
+      {
+        "__typename": "User",
+        "id": "VXNlcjo3ZDFlZTQ5Ny00OTRjLTQwZTctYmVlMy0wZTQ4ZTU4MDljNTc=",
+        "draftsCount": 7
+      }
+    ],
+    "otherQueryWithUsers": [
+      {
+        "__typename": "User",
+        "id": "VXNlcjo3ZDFlZTQ5Ny00OTRjLTQwZTctYmVlMy0wZTQ4ZTU4MDljNTc=",
+        "email": "other@email.com"
+      }
+    ]
+  }
+}
+```
+
+cache
+
+```
+User:VXNlcjo0YzdiNmViYS01ZDY3LTRhMzgtYjU3Yi0zNTc0ZjdjZWM2OGU: {
+  "email": "some@email.com",
+  "draftsCount": 3
+},
+User:VXNlcjo3ZDFlZTQ5Ny00OTRjLTQwZTctYmVlMy0wZTQ4ZTU4MDljNTc=: {
+  "draftsCount": 7
+},
+
+Query:allUsers: {
+  data: ['User:VXNlcjo0YzdiNmViYS01ZDY3LTRhMzgtYjU3Yi0zNTc0ZjdjZWM2OGU', 'User:VXNlcjo3ZDFlZTQ5Ny00OTRjLTQwZTctYmVlMy0wZTQ4ZTU4MDljNTc=']
+}
+
+Query:otherQueryWithUsers:params:emailStartsWith:other: {
+  data: ['User:VXNlcjo3ZDFlZTQ5Ny00OTRjLTQwZTctYmVlMy0wZTQ4ZTU4MDljNTc=']
+}
+```
+
 7. Types, models, fragments
 
 - Dev-time code generation for type-safety
