@@ -2,9 +2,6 @@
   "name": "synced",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "relay": "relay-compiler --watch"
-  },
   "private": true,
   "dependencies": {
     "@pothos/core": "^3.23.1",
